@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Illness Remedies Guide</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to right, #f0f4f8, #d9eaf7);
+      color: #333;
+      transition: background 0.5s ease;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #2c3e50;
+      animation: fadeIn 1s ease-out;
+    }
+    .lang-buttons, .tools {
+      text-align: center;
+      margin: 15px 0;
+      animation: fadeInUp 1s ease;
+    }
+    .lang-buttons button, .tools button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #search {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      margin: 10px auto;
+      display: block;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      transition: all 0.3s ease;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 6px;
+      overflow: hidden;
+      animation: fadeIn 1.5s ease;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f1f9ff;
+      color: #2c3e50;
+    }
+    tr:hover {
+      background-color: #f9f9f9;
+      transition: background-color 0.2s;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @media print {
+      .lang-buttons, .tools, #search {
+        display: none;
+      }
+      body {
+        background: white;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">Common Illness Remedies</h1>
+  <div class="lang-buttons">
+    <button onclick="switchLang('en')">English</button>
+    <button onclick="switchLang('hi')">हिन्दी</button>
+    <button onclick="switchLang('mr')">मराठी</button>
+    <button onclick="switchLang('ta')">தமிழ்</button>
+    <button onclick="switchLang('te')">తెలుగు</button>
+    <button onclick="switchLang('kn')">ಕನ್ನಡ</button>
+    <button onclick="switchLang('bn')">বাংলা</button>
+  </div>
+  <div class="tools">
+    <input type="text" id="search" placeholder="🔍 Search illness...">
+    <button onclick="window.print()">🖨️ Print PDF</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th id="illnessHead">Illness</th>
+        <th id="modernHead">Modern Remedies</th>
+        <th id="traditionalHead">Traditional Remedies</th>
+      </tr>
+    </thead>
+    <tbody id="remedyTable"></tbody>
+  </table>
+
+  <script>
+    const data = {
+      en: {
+        title: "Common Illness Remedies",
+        headers: ["Illness", "Modern Remedies", "Traditional Remedies"],
+        remedies: [
+          ["Fever", "Paracetamol, hydration, and rest.", "Tulsi tea, wet cloth on forehead, rice gruel."],
+          ["Headache", "Ibuprofen, rest, avoid bright light.", "Clove paste, peppermint oil massage."],
+          ["Cold", "Antihistamines, steam inhalation.", "Kadha (herbal decoction), turmeric milk."],
+          ["Cough", "Cough syrup, warm fluids.", "Honey + ginger mix, mulethi tea."],
+          ["Indigestion", "Antacids, bland diet.", "Ajwain + black salt, lemon juice."],
+          ["Constipation", "Fiber, Isabgol, laxatives.", "Triphala churna, ghee in warm milk."],
+          ["Acidity", "Omeprazole, avoid spicy food.", "Cold milk, jeera buttermilk."],
+          ["Sore Throat", "Lozenges, salt water gargle.", "Haldi gargle, honey + tulsi tea."],
+          ["Diarrhea", "ORS, Loperamide.", "Rice water, curd + banana."],
+          ["Body Pain", "Painkillers, warm compress.", "Hot oil massage, bath with Epsom salt."]
+        ]
+      },
+      hi: {
+        title: "सामान्य रोगों का इलाज",
+        headers: ["रोग", "आधुनिक इलाज", "पारंपरिक उपाय"],
+        remedies: [
+          ["बुखार", "पैरासिटामोल, पानी पीएं और आराम करें।", "तुलसी की चाय, माथे पर गीला कपड़ा।"],
+          ["सिरदर्द", "इबुप्रोफेन, अंधेरे में आराम करें।", "लौंग का पेस्ट, पुदीना तेल।"],
+          ["जुकाम", "एंटीहिस्टामिन, भाप लें।", "काढ़ा, हल्दी वाला दूध।"],
+          ["खांसी", "सिरप, गर्म पानी पिएं।", "शहद + अदरक, मुलेठी की चाय।"],
+          ["अपच", "एंटासिड, हल्का खाना खाएं।", "अजवाइन, नींबू पानी।"],
+          ["कब्ज", "फाइबर, इसबगोल, रेचक दवा।", "त्रिफला चूर्ण, गर्म दूध में घी।"],
+          ["अम्लता", "ओमेप्राज़ोल, तीखा भोजन न खाएं।", "ठंडा दूध, जीरा छाछ।"],
+          ["गला दर्द", "लॉज़ेंज, गरारे करें।", "हल्दी गरारे, शहद-तुलसी।"],
+          ["दस्त", "ORS, लोपेरामाइड।", "चावल का पानी, दही केला।"],
+          ["शरीर दर्द", "पेनकिलर, गर्म सेंक।", "तेल मालिश, गर्म पानी से स्नान।"]
+        ]
+      },
+      mr: {
+        title: "सामान्य आजार उपाय",
+        headers: ["अजार", "आधुनिक उपाय", "पारंपरिक उपाय"],
+        remedies: [
+          ["ताप", "पॅरासिटामॉल, पाणी प्या व विश्रांती घ्या.", "तुळस-आलं चहा, कपाळावर ओला कपडा."],
+          ["डोकेदुखी", "इबुप्रोफेन, अंधारात आराम.", "लवंग पेस्ट, पुदीना तेल मालीश."],
+          ["सर्दी", "अँटीहिस्टॅमिन, वाफ घ्या.", "काढा, हळदी दूध."],
+          ["खोकला", "सिरप, कोमट पाणी.", "मध+आलं, यष्टीमधु चहा."],
+          ["अपचन", "अँटासिड, साधा आहार.", "ओवा+मीठ, लिंबूपाणी."],
+          ["मळमळ", "फायबर, इसबगोल.", "त्रिफळा चूर्ण, तूप दूधात."],
+          ["अॅसिडिटी", "ओमेप्राझोल.", "थंड दूध, जीर्‍याची ताक."],
+          ["घशात दुखणं", "लॉझेंज, खारट पाण्याचे गार्गल.", "हळदी गार्गल, मध-तुळस."],
+          ["अतिसार", "ORS, लोपरामाइड.", "भाताचं पाणी, दही केळं."],
+          ["शरीरदुखी", "पेनकिलर, गरम पाण्याचा पट्टा.", "तेल मालीश, गरम पाण्याने अंघोळ."]
+        ]
+      },
+      ta: {
+        title: "பொது நோய்கள் நிவாரணம்",
+        headers: ["நோய்", "நவீன மருந்துகள்", "பாரம்பரிய வைத்தியம்"],
+        remedies: [
+          ["காய்ச்சல்", "பெராசிட்டமால், தண்ணீர் குடிக்கவும், ஓய்வெடுக்கவும்.", "துளசி தேநீர், ஈர துணி额, பாயசம்."],
+          ["தலைவலி", "இபுபுரோபன், அமைதியான இடம்.", "லவங்கம் விழுது, புதினா எண்ணெய்."],
+          ["மூக்கு வழிவு", "என்டிஹிஸ்டமைன், நீராவி.", "கஷாயம், மஞ்சள் பாலை."],
+          ["இருமல்", "சிறப்பான சிரப்புகள்.", "இஞ்சி + தேன், முலைத்தி டீ."],
+          ["அஜீரணம்", "ஆண்டாசிட், ஒளித்த உணவு.", "ஓமம் + உப்பு, எலுமிச்சை நீர்."],
+          ["மலம்", "ஃபைபர், ஈஸப்கோல்.", "திரிபலா பொடி, நெய் பால்."],
+          ["அமிலம்", "ஓமிபிராசோல்.", "குளிர் பால், சீரக தயிர்."],
+          ["தொண்டை வலி", "உப்பு நீர் குழறல்.", "மஞ்சள் குழறல், தேன் + துளசி."],
+          ["வயிற்றுப் போக்கு", "ORS, லோபெரமைடு.", "அரிசி நீர், தயிர் வாழை."],
+          ["உடல் வலி", "வலியுறுத்திகள்.", "எண்ணெய் மசாஜ், சூடான நீராடல்."]
+        ]
+      },
+      te: {
+        title: "సాధారణ అనారోగ్య నివారణలు",
+        headers: ["అనారోగ్యం", "ఆధునిక చికిత్సలు", "సాంప్రదాయ చికిత్సలు"],
+        remedies: [
+          ["జ్వరము", "పారాసిటామాల్, నీరు, విశ్రాంతి.", "తులసి టీ, తడి గుడ్డ, గంజి."],
+          ["తలనొప్పి", "ఇబుప్రోఫెన్, విశ్రాంతి.", "లవంగ పేస్ట్, పుదీనా నూనె మసాజ్."],
+          ["జలుబు", "యాంటీహిస్టమిన్లు, ఆవిరి పీల్చడం.", "కషాయం, పసుపు పాలు."],
+          ["దగ్గు", "సిరప్, నువ్వుల నూనె వాడండి.", "తేనె + అల్లం, ములెట్టి టీ."],
+          ["జీర్ణక్రియలోపం", "అంటాసిడ్లు, తేలికపాటి ఆహారం.", "వాము + ఉప్పు, నిమ్మరసం."],
+          ["మలబద్ధకం", "ఫైబర్, ఇసబ్గోల్.", "త్రిఫల చూర్ణం, నెయ్యి పాలలో."],
+          ["ఆమ్లత", "ఓమెప్రాజోల్.", "చల్లని పాలు, జీలకర్ర మజ్జిగ."],
+          ["గొంతునొప్పి", "ఉప్పు నీటి గార్గిల్.", "పసుపు గార్గిల్, తులసి తేనె టీ."],
+          ["విడువడి", "ORS, లోపెరామైడ్.", "బియ్యం నీరు, పెరుగు అరటి."],
+          ["శరీర నొప్పి", "పెయిన్ కిల్లర్.", "నూనె మసాజ్, వేడి నీటి స్నానం."]
+        ]
+      },
+      kn: {
+        title: "ಸಾಮಾನ್ಯ ಅನಾರೋಗ್ಯ ಪರಿಹಾರಗಳು",
+        headers: ["ಅನಾರೋಗ್ಯ", "ಆಧುನಿಕ ಚಿಕಿತ್ಸೆ", "ಪಾರಂಪರಿಕ ಚಿಕಿತ್ಸೆ"],
+        remedies: [
+          ["ಜ್ವರ", "ಪ್ಯಾರಾಸಿಟಮೋಲ್, ವಿಶ್ರಾಂತಿ.", "ತುಳಸಿ ಚಹಾ, ತಂಪಾದ ಉಡುಪು."],
+          ["ತಲ ನೋವು", "ಇಬುಪ್ರೊಫೆನ್, ಬೆಳಕು ತಪ್ಪಿಸಿ.", "ಲವಂಗ ಪೇಸ್ಟ್, ಪುದೀನಾ ಎಣ್ಣೆ."],
+          ["ಜಲದೋಷ", "ಆಂಟಿಹಿಸ್ಟಮಿನ್, ವಾಸನೆಗೊಂಡ ಬಾಪ್.", "ಕಷಾಯ, ಹುಳಿಗೆ ಹಾಲು."],
+          ["ಖಕ್ಕರ್", "ಸಿರಪ್, ಉಷ್ಣಪಾನೀಯಗಳು.", "ಬೆಲ್ಲ-ಶುಂಠಿ, ಯಷ್ಟಿಮಧು ಚಹಾ."],
+          ["ಅಜೀರ್ಣ", "ಆಂಟಾಸಿಡ್, ಸಾಸಿವೆಹೋಳಿಯ ಆಹಾರ.", "ಓಮ + ಉಪ್ಪು, ಲಿಂಬು ನೀರು."],
+          ["ಬದ್ಧಕೋಶ्ठತೆ", "ಫೈಬರ್, ಇಸಬ್ಗೋಲ್.", "ತ್ರಿಫಲಾ ಪುಡಿ, ತುಪ್ಪ ಹಾಲಿನಲ್ಲಿ."],
+          ["ಆಮ್ಲತೆ", "ಓಮೆಪ್ರಾಜೋಲ್.", "ತಂಪು ಹಾಲು, ಜೀರಿಗೆ ಮೊಸರು."],
+          ["ಕಂಟಿಮೂಡು", "ಉಪ್ಪಿನೀರು ಗಾರ್ಗಲ್.", "ಅರಿಶಿಣ ನೀರು, ತುಳಸಿ-ಬೆಲ್ಲ."],
+          ["ಅತಿಸಾರ", "ORS, ಲೋಪೆರಾಮೈಡ್.", "ಅಕ್ಕಿ ನೀರು, ಮೊಸರು ಬಾಳೆಹಣ್ಣು."],
+          ["ದೇಹ ನೋವು", "ಪೇನ್ ಕಿಲ್ಲರ್.", "ಎಣ್ಣೆ ಮಸಾಜ್, ಬಿಸಿ ನೀರಿನ ಸ್ನಾನ."]
+        ]
+      },
+      bn: {
+        title: "সাধারণ রোগের প্রতিকার",
+        headers: ["রোগ", "আধুনিক প্রতিকার", "ঐতিহ্যবাহী প্রতিকার"],
+        remedies: [
+          ["জ্বর", "প্যারাসিটামল, বিশ্রাম।", "তুলসী চা, ভেজা কাপড়।"],
+          ["মাথাব্যথা", "ইবুপ্রোফেন, অন্ধকারে বিশ্রাম।", "লবঙ্গ পেস্ট, পুদিনা তেল।"],
+          ["সর্দি", "অ্যান্টিহিস্টামিন, ভাপ নিন।", "কাঠা, হলুদ দুধ।"],
+          ["কাশি", "কাশির সিরাপ, গরম জল।", "মধু + আদা, মুলেঠি চা।"],
+          ["অজীর্ণ", "অ্যান্টাসিড, হালকা খাবার।", "অজওয়াইন, লেবুর জল।"],
+          ["কোষ্ঠকাঠিন্য", "ফাইবার, ইসবগুল।", "ত্রিফলা চূর্ণ, ঘি দুধে।"],
+          ["অম্লতা", "ওমেপ্রাজল।", "ঠান্ডা দুধ, জিরা দই।"],
+          ["গলা ব্যথা", "গার্গল, লজেঞ্জ।", "হলুদ গার্গল, তুলসী চা।"],
+          ["ডায়ারিয়া", "ORS, লোপেরামাইড।", "ভাত জল, দই কলা।"],
+          ["শরীর ব্যথা", "পেইন কিলার।", "তেল মালিশ, গরম স্নান।"]
+        ]
+      }
+    };
+
+    function switchLang(lang) {
+      const langData = data[lang] || data.en;
+      document.getElementById("title").innerText = langData.title;
+      document.getElementById("illnessHead").innerText = langData.headers[0];
+      document.getElementById("modernHead").innerText = langData.headers[1];
+      document.getElementById("traditionalHead").innerText = langData.headers[2];
+      const tbody = document.getElementById("remedyTable");
+      tbody.innerHTML = "";
+      langData.remedies.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+          const td = document.createElement("td");
+          td.innerText = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      document.getElementById("search").value = "";
+    }
+
+    document.getElementById("search").addEventListener("input", function () {
+      const value = this.value.toLowerCase();
+      const rows = document.querySelectorAll("#remedyTable tr");
+      rows.forEach(row => {
+        const illness = row.children[0].innerText.toLowerCase();
+        row.style.display = illness.includes(value) ? "" : "none";
+      });
+    });
+
+    switchLang("en");
+  </script>
+</body>
+</html>

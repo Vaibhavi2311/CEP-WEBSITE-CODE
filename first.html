@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthCare Guide</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-section img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: #ecf0f1;
+    }
+
+    .search-box {
+      margin-top: 10px;
+    }
+
+    .search-box input {
+      padding: 0.6rem 1rem;
+      border: 2px solid #27ae60;
+      border-radius: 25px;
+      font-size: 1rem;
+      width: 250px;
+      transition: 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      width: 300px;
+      border-color: #2ecc71;
+    }
+
+    /* MAIN GRID */
+    .main-grid {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+    }
+
+    .card h2 {
+      color: #27ae60;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: #555;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+      .hospitals {
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-top: 2px solid #ddd;
+  }
+
+  .hospitals h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333;
+  }
+
+  .hospital-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hospital-card {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .hospital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+
+  .hospital-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .hospital-info {
+    padding: 15px;
+  }
+
+  .hospital-info h3 {
+    margin: 0 0 10px;
+    color: #0077b6;
+    font-size: 20px;
+  }
+
+  .hospital-info p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 15px;
+  }
+  .hospitals {
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-top: 2px solid #ddd;
+  }
+
+  .hospitals h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333;
+  }
+
+  .hospital-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hospital-card {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .hospital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+
+  .hospital-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .hospital-info {
+    padding: 15px;
+  }
+
+  .hospital-info h3 {
+    margin: 0 0 10px;
+    color: #0077b6;
+    font-size: 20px;
+  }
+
+  .hospital-info p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 15px;
+  }
+
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+      }
+      .search-box input {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-section">
+      <img src="hack.jpg" alt="Logo">
+      <div>
+        <h1>HealHack</h1>
+        <p class="tagline">Track Hack and Heal on Track</p>
+      </div>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="🔍 Search here...">
+    </div>
+  </header>
+
+  <!-- GRID CARDS (you can link to other files/pages) -->
+  <div class="main-grid">
+    <div class="card">
+      <h2>Illness Info</h2>
+      <p>Click here to explore details about common illnesses.</p>
+      <a href="solution.html">➡ Go</a>
+    </div>
+    <div class="card">
+      <h2>Contact</h2>
+      <p>Fill in your contact details before selecting medicines.</p>
+      <a href="contact.html">➡ Go</a>
+    </div>
+    <div class="card">
+      <h2>Medicines</h2>
+      <p>Browse suitable medicines after filling your details.</p>
+      <a href="shop.html">➡ Go</a>
+    </div>
+    <div class="card">
+      <h2>About Us</h2>
+      <p>Learn more about our mission and vision for healthcare.</p>
+      <a href="about.html">➡ Go</a>
+    </div>
+  </div>
+  <section class="hospitals">
+  <h2>Nearby Hospitals</h2>
+  <div class="hospital-list">
+    <div class="hospital-card">
+      <img src="https://img.freepik.com/premium-photo/flat-design-modern-hospital-building-with-clean-ai-generated_1032935-3234.jpg" alt="Apollo Hospital">
+      <div class="hospital-info">
+        <h3>Apollo Hospital</h3>
+        <p>Location: Andheri, Mumbai</p>
+        <p>Contact: +91 98765 43210</p>
+      </div>
+    </div>
+    <div class="hospital-card">
+      <img src="https://m.economictimes.com/thumb/msid-114739183,width-1200,height-900,resizemode-4,imgsize-88980/fortis-seeks-cci-nod-to-buy-31-52-more-in-diagnostics-subsidiary-agilus.jpg" alt="Fortis Hospital">
+      <div class="hospital-info">
+        <h3>Fortis Hospital</h3>
+        <p>Location: Mulund, Mumbai</p>
+        <p>Contact: +91 91234 56789</p>
+      </div>
+    </div>
+    <div class="hospital-card">
+      <img src="https://lilavatifoundation.com/images/hospital.jpg" alt="Lilavati Hospital">
+      <div class="hospital-info">
+        <h3>Lilavati Hospital</h3>
+        <p>Location: Bandra, Mumbai</p>
+        <p>Contact: +91 97654 32109</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- FOOTER -->
+  <footer>
+    &copy; 2025 HealthCare Guide. All Rights Reserved.
+  </footer>
+
+</body>
+</html>
+
