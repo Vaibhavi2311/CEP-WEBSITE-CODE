@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MedEase Medicine Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .products-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .product img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .product h3 {
+      margin: 10px 0 5px;
+      color: #333;
+    }
+
+    .product p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .product button {
+      background: #28a745;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .product button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>MedEase - Medicine Store</h1>
+
+  <div class="products-container">
+    <!-- 20 Medicines -->
+    <div class="product">
+      <img src="https://assets.sayacare.in/api/images/product_image/large_image/23/74/Paracetamol-500-mg-Tablet_1.webp" alt="Paracetamol">
+      <h3>Paracetamol</h3>
+      <p>Fever & Pain relief</p>
+      <p>₹20 per strip</p>
+      <button onclick="addToCart('Paracetamol')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://5.imimg.com/data5/SELLER/Default/2023/7/325863554/WI/JM/SY/135658020/ibuprofen-tablets-ip-200-mg-.jpg" alt="Ibuprofen">
+      <h3>Ibuprofen</h3>
+      <p>Anti-inflammatory, Pain relief</p>
+      <p>₹30 per strip</p>
+      <button onclick="addToCart('Ibuprofen')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://m.media-amazon.com/images/I/51Mq6JyiT1L._UF1000,1000_QL80_.jpg" alt="Cough Syrup">
+      <h3>Cough Syrup</h3>
+      <p>Dry & Wet Cough</p>
+      <p>₹50 per bottle</p>
+      <button onclick="addToCart('Cough Syrup')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://cdn.mafrservices.com/sys-master-root/h53/h6e/50232046583838/854605_main.jpg?im=Resize=1700" alt="Aspirin">
+      <h3>Aspirin</h3>
+      <p>Pain & Fever</p>
+      <p>₹25 per strip</p>
+      <button onclick="addToCart('Aspirin')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://medino-product.imgix.net/teva-cetirizine-10mg-hay-fever-allergy-relief-30-tablets-b9ce9411.png?h=467&bg=FFF&auto=format,compress&q=60" alt="Cetirizine">
+      <h3>Cetirizine</h3>
+      <p>Allergy Relief</p>
+      <p>₹15 per strip</p>
+      <button onclick="addToCart('Cetirizine')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://www.hlhealthcare.co.in/wp-content/uploads/2024/07/HELMOX-625-scaled.jpg" alt="Amoxicillin">
+      <h3>Amoxicillin</h3>
+      <p>Antibiotic</p>
+      <p>₹45 per strip</p>
+      <button onclick="addToCart('Amoxicillin')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://www.bbassets.com/media/uploads/p/l/40329553_2-tata-1mg-antacid-antigas-liquid-mint-flavour.jpg" alt="Antacid">
+      <h3>Antacid</h3>
+      <p>Heartburn & Acidity</p>
+      <p>₹18 per strip</p>
+      <button onclick="addToCart('Antacid')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://5.imimg.com/data5/SELLER/Default/2025/5/514411801/YS/RC/WM/15666310/ors-powder-sachet.jpg" alt="ORS Pack">
+      <h3>ORS Pack</h3>
+      <p>Dehydration</p>
+      <p>₹10 per sachet</p>
+      <button onclick="addToCart('ORS Pack')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://www.bbassets.com/media/uploads/p/l/40323622_1-limcee-vitamin-c-chewable-tablet-500-mg-orange-flavour.jpg" alt="Vitamin C">
+      <h3>Vitamin C</h3>
+      <p>Immunity Booster</p>
+      <p>₹25 per bottle</p>
+      <button onclick="addToCart('Vitamin C')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://5.imimg.com/data5/SELLER/Default/2023/11/364179362/NM/GV/BM/203498787/dolo-650-paracetamol-tablets-ip.jpg" alt="Dolo 650">
+      
+      <h3>Dolo 650</h3>
+      <p>Fever & Body Pain</p>
+      <p>₹20 per strip</p>
+      <button onclick="addToCart('Dolo 650')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://www.crocin.com/content/dam/cf-consumer-healthcare/panadol-reborn/en_IN/product-detail/380x463/Crocin-Advance-Pack_20May22-380x463.png" alt="Crocin">
+      <h3>Crocin</h3>
+      <p>Fever relief</p>
+      <p>₹22 per strip</p>
+      <button onclick="addToCart('Crocin')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://thefrenchpharmacy.co/cdn/shop/products/Untitleddesign_27_95e13ce9-de1b-42ab-8fd0-8e69d68343b2.jpg?v=1644589161" alt="Calpol">
+      <h3>Calpol</h3>
+      <p>Child Fever Relief</p>
+      <p>₹30 per bottle</p>
+      <button onclick="addToCart('Calpol')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://m.media-amazon.com/images/I/71qnGvA4ykL._UF1000,1000_QL80_.jpg" alt="Lozenges">
+      <h3>Lozenges</h3>
+      <p>Soothes sore throat</p>
+      <p>₹15 per pack</p>
+      <button onclick="addToCart('Lozenges')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://i0.wp.com/cdn-prod.medicalnewstoday.com/content/images/articles/320/320750/pack-of-metformin-tablets.jpg?w=1155&h=1575" alt="Metformin">
+      <h3>Metformin</h3>
+      <p>Diabetes Control</p>
+      <p>₹40 per strip</p>
+      <button onclick="addToCart('Metformin')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://res.cloudinary.com/zava-www-uk/image/upload/a_exif,f_auto,e_sharpen:100,c_fit,w_800,h_600,fl_lossy/v1706806290/sd/uk/services-setup/acid-reflux/omeprazole/knh8cjncnq9z5axkil3h.png" alt="Omeprazole">
+      <h3>Omeprazole</h3>
+      <p>Acid Reflux</p>
+      <p>₹28 per strip</p>
+      <button onclick="addToCart('Omeprazole')">Add to Cart</button>
+    </div>
+<div class="product">
+      <img src="https://m.media-amazon.com/images/I/71qnGvA4ykL._UF1000,1000_QL80_.jpg" alt="Lozenges">
+      <h3>Lozenges</h3>
+      <p>Soothes sore throat</p>
+      <p>₹15 per pack</p>
+      <button onclick="addToCart('Lozenges')">Add to Cart</button>
+    </div>
+<div class="product">
+      <img src="https://m.media-amazon.com/images/I/71qnGvA4ykL._UF1000,1000_QL80_.jpg" alt="Lozenges">
+      <h3>Lozenges</h3>
+      <p>Soothes sore throat</p>
+      <p>₹15 per pack</p>
+      <button onclick="addToCart('Lozenges')">Add to Cart</button>
+    </div>
+<div class="product">
+      <img src="https://m.media-amazon.com/images/I/71qnGvA4ykL._UF1000,1000_QL80_.jpg" alt="Lozenges">
+      <h3>Lozenges</h3>
+      <p>Soothes sore throat</p>
+      <p>₹15 per pack</p>
+      <button onclick="addToCart('Lozenges')">Add to Cart</button>
+    </div>
+
+
+    
+
+    
+    
+    
+      
+  </div>
+
+  <script>
+    function addToCart(medicineName) 
+    {
+      alert(medicineName + " has been added to your cart.");
+    }
+  
+  </script>
+  
+</body>
+</html>
+
+
