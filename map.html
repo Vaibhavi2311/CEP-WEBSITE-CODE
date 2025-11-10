@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Click Map → Show Nearby Hospitals</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body { margin:0; font-family: Arial, sans-serif; }
+    #map { height: 100vh; }
+    #info { position: absolute; top:10px; left:10px; background:white; padding:10px; z-index:1000; border-radius:6px; max-height:250px; overflow:auto; width:280px; box-shadow:0 2px 6px rgba(0,0,0,0.3);}
+    .hospital { margin:5px 0; font-size:13px; padding:4px; border-bottom:1px solid #eee; cursor:pointer; }
+    .hospital:hover { background:#f0f0f0; }
+    .hospital b { font-size:14px; }
+  </style>
+</head>
+<body>
+  <div id="info">Click anywhere on the map to find nearby hospitals (starting at 3 km, auto-expands if none found)</div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Setup map
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // India center
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:19, attribution:"© OpenStreetMap contributors"
+    }).addTo(map);
+
+    let hospitalLayer = L.layerGroup().addTo(map);
+
+    // Function to fetch hospitals near a point
+    async function fetchHospitals(lat, lon, radius = 3000) {
+      document.getElementById("info").innerHTML = `Searching hospitals within ${Math.round(radius/1000)} km...`;
+
+      const query = `
+        [out:json][timeout:25];
+        (
+          node["amenity"="hospital"](around:${radius},${lat},${lon});
+          way["amenity"="hospital"](around:${radius},${lat},${lon});
+          relation["amenity"="hospital"](around:${radius},${lat},${lon});
+        );
+        out center;`;
+
+      try {
+        const res = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          body: query,
+          headers: { "Content-Type": "text/plain" }
+        });
+        const data = await res.json();
+
+        if (!data.elements || data.elements.length === 0) {
+          if (radius >= 50000) {
+            document.getElementById("info").innerHTML = "No hospitals found within 50 km.";
+            return;
+          }
+          // Try again with bigger radius (+5 km each time)
+          fetchHospitals(lat, lon, radius + 5000);
+        } else {
+          renderHospitals(data.elements, lat, lon);
+        }
+      } catch (err) {
+        document.getElementById("info").innerHTML = "Failed to fetch hospital data.";
+        console.error(err);
+      }
+    }
+
+    // Show results
+    function renderHospitals(elements, lat, lon) {
+      hospitalLayer.clearLayers();
+      const infoEl = document.getElementById("info");
+
+      infoEl.innerHTML = "<b>Hospitals nearby:</b><br>";
+      elements.forEach(el => {
+        const tags = el.tags || {};
+        const name = tags.name || "Unnamed Hospital";
+        const latitude = el.lat ?? el.center?.lat;
+        const longitude = el.lon ?? el.center?.lon;
+
+        // extract more details
+        const addr = `${tags["addr:street"] || ""} ${tags["addr:city"] || ""} ${tags["addr:state"] || ""} ${tags["addr:postcode"] || ""}`.trim();
+        const phone = tags.phone || tags["contact:phone"] || "Not available";
+        const website = tags.website || tags["contact:website"] || null;
+
+        // popup content
+        let popupContent = `<b>${name}</b><br>`;
+        if (addr) popupContent += `📍 ${addr}<br>`;
+        popupContent += `📞 ${phone}<br>`;
+        if (website) popupContent += `<a href="${website}" target="_blank">🌐 Website</a>`;
+
+        // add to map
+        const marker = L.marker([latitude, longitude]).addTo(hospitalLayer);
+        marker.bindPopup(popupContent);
+
+        // add to list
+        const div = document.createElement("div");
+        div.className = "hospital";
+        div.innerHTML = `<b>${name}</b><br>${addr ? "📍 "+addr+"<br>" : ""}📞 ${phone}`;
+        div.onclick = () => {
+          map.setView([latitude, longitude], 16);
+          marker.openPopup();
+        };
+        infoEl.appendChild(div);
+      });
+
+      // marker for clicked location
+      L.circleMarker([lat, lon], { radius:8, color:"red" })
+        .addTo(hospitalLayer)
+        .bindPopup("Search center")
+        .openPopup();
+    }
+
+    // Handle clicks on map
+    map.on("click", (e) => {
+      const { lat, lng } = e.latlng;
+      fetchHospitals(lat, lng);
+    });
+  </script>
+</body>
+</html>
