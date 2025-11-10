@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HealHack Remedy Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#f0f2f5;background:url('https://assets.designtemplate.io/wed-jan-11-2023-12-58-pm50472.webp') no-repeat center center fixed;background-size: cover;}
+    .chat-container { width:400px; height:600px; background:white; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+    .chat-header { background:#4CAF50; color:white; padding:15px; text-align:center; font-size:18px;}
+    .chat-messages { flex:1; padding:15px; overflow-y:auto; background:#fafafa;}
+    .message { margin:8px 0; padding:10px 14px; border-radius:8px; max-width:80%; white-space:pre-line; line-height:1.4;}
+    .user-message { background:#DCF8C6; align-self:flex-end;}
+    .bot-message { background:#e4e6eb; align-self:flex-start;}
+    .chat-input { display:flex; border-top:1px solid #ddd;}
+    .chat-input input { flex:1; padding:12px; border:none; outline:none; font-size:14px;}
+    .chat-input button { background:#4CAF50; border:none; color:white; padding:0 20px; cursor:pointer; font-size:14px;}
+    .chat-input button:hover { background:#45a049;}
+  </style>
+</head>
+<body>
+<div class="chat-container">
+  <div class="chat-header">HealHack Remedy Chatbot</div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Ask about an illness..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+const chatMessages = document.getElementById("chatMessages");
+const userInput = document.getElementById("userInput");
+
+function addMessage(message, sender){
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add("message");
+  msgDiv.classList.add(sender === "user" ? "user-message" : "bot-message");
+  msgDiv.textContent = message;
+  chatMessages.appendChild(msgDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function fetchRemedy(query){
+  try{
+    // First: search for the page title
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(query)}`;
+    const searchRes = await fetch(searchUrl);
+    const searchData = await searchRes.json();
+    if(!searchData.query.search.length) return "No remedies found. Try a different illness.";
+    
+    const pageTitle = searchData.query.search[0].title;
+
+    // Second: fetch extract from that page
+    const summaryUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts&exintro&explaintext&titles=${encodeURIComponent(pageTitle)}`;
+    const summaryRes = await fetch(summaryUrl);
+    const summaryData = await summaryRes.json();
+    const page = Object.values(summaryData.query.pages)[0];
+    return page.extract || "No remedies found.";
+  } catch(e){
+    return "⚠️ Failed to fetch data. Please try again.";
+  }
+}
+
+async function sendMessage(){
+  const message = userInput.value.trim();
+  if(!message) return;
+  addMessage(message, "user");
+  userInput.value = "";
+  addMessage("Searching for remedies...", "bot");
+  
+  const response = await fetchRemedy(message);
+  addMessage("🤖 " + response, "bot");
+}
+
+userInput.addEventListener("keypress", function(e){
+  if(e.key === "Enter") sendMessage();
+});
+
+// Welcome message
+addMessage("Hello! Ask me about an illness (e.g., 'fever', 'cold') and I will fetch remedies from Wikipedia.", "bot");
+</script>
+</body>
+</html>
+
