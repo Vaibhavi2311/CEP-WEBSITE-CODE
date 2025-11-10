@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Click Map → Show Nearby Hospitals</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body { margin:0; font-family: Arial, sans-serif; }
+    #map { height: 100vh; }
+    #info { position: absolute; top:10px; left:10px; background:white; padding:10px; z-index:1000; border-radius:6px; max-height:200px; overflow:auto; width:250px; box-shadow:0 2px 6px rgba(0,0,0,0.3);}
+    .hospital { margin:5px 0; font-size:14px; }
+  </style>
+</head>
+<body>
+  <div id="info">Click anywhere on the map to find nearby hospitals (within 3 km)</div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Setup map
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // India center
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:19, attribution:"© OpenStreetMap contributors"
+    }).addTo(map);
+
+    let hospitalLayer = L.layerGroup().addTo(map);
+
+    // Function to fetch hospitals near a point
+    async function fetchHospitals(lat, lon) {
+      document.getElementById("info").innerHTML = "Searching for hospitals...";
+
+      // Overpass query: hospitals within 3000m
+      const radius = 10000; // meters
+      const query = `
+        [out:json][timeout:25];
+        (
+          node["amenity"="hospital"](around:${radius},${lat},${lon});
+          way["amenity"="hospital"](around:${radius},${lat},${lon});
+          relation["amenity"="hospital"](around:${radius},${lat},${lon});
+        );
+        out center;`;
+
+      try {
+        const res = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          body: query,
+          headers: { "Content-Type": "text/plain" }
+        });
+        const data = await res.json();
+        renderHospitals(data.elements, lat, lon);
+      } catch (err) {
+        document.getElementById("info").innerHTML = "Failed to fetch hospital data.";
+        console.error(err);
+      }
+    }
+
+    // Show results
+    function renderHospitals(elements, lat, lon) {
+      hospitalLayer.clearLayers();
+      const infoEl = document.getElementById("info");
+
+      if (!elements || elements.length === 0) {
+        infoEl.innerHTML = "No hospitals found nearby.";
+        return;
+      }
+
+      infoEl.innerHTML = "<b>Hospitals nearby:</b><br>";
+      elements.forEach(el => {
+        const name = el.tags?.name || "Unnamed Hospital";
+        const latitude = el.lat ?? el.center?.lat;
+        const longitude = el.lon ?? el.center?.lon;
+
+        // add to map
+        const marker = L.marker([latitude, longitude]).addTo(hospitalLayer);
+        marker.bindPopup(`<b>${name}</b>`);
+
+        // add to list
+        const div = document.createElement("div");
+        div.className = "hospital";
+        div.textContent = name;
+        div.onclick = () => {
+          map.setView([latitude, longitude], 16);
+          marker.openPopup();
+        };
+        infoEl.appendChild(div);
+      });
+
+      // marker for clicked location
+      L.circleMarker([lat, lon], { radius:8, color:"red" })
+        .addTo(hospitalLayer)
+        .bindPopup("Search center")
+        .openPopup();
+    }
+
+    // Handle clicks on map
+    map.on("click", (e) => {
+      const { lat, lng } = e.latlng;
+      fetchHospitals(lat, lng);
+    });
+  </script>
+</body>
+</html>
+
